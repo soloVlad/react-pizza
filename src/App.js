@@ -1,13 +1,21 @@
+import { useEffect, useState } from 'react';
+
 import Header from './components/Header';
 import Categories from './components/Categories';
 import Sort from './components/Sort';
 import PizzaBlock from './components/PizzaBlock';
 
-import pizzas from './assets/pizzas.json';
-
 import './scss/app.scss';
 
 function App() {
+  const [pizzas, setPizzas] = useState([]);
+
+  useEffect(() => {
+    fetch(process.env.REACT_APP_MOCKAPI_URL)
+      .then(res => res.json())
+      .then(data => setPizzas(data));
+  }, []);
+
   return (
     <div className="wrapper">
       <Header />
