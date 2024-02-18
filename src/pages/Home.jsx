@@ -5,7 +5,7 @@ import PizzaBlockSkeleton from "../components/PizzaBlock/skeleton";
 import Categories from "../components/Categories";
 import Sort from "../components/Sort";
 
-const Home = () => {
+const Home = ({ searchValue }) => {
   const [pizzas, setPizzas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [categoryId, setCategoryId] = useState(0);
@@ -18,8 +18,9 @@ const Home = () => {
     setIsLoading(true);
 
     const categorySelection = categoryId > 0 ? `category=${categoryId}` : '';
+    const searchSelection = searchValue ? `&search=${searchValue}` : '';
 
-    const Url = `${process.env.REACT_APP_MOCKAPI_URL}/?${categorySelection}&sortBy=${sortType.property}&order=desc`;
+    const Url = `${process.env.REACT_APP_MOCKAPI_URL}/?${categorySelection}&sortBy=${sortType.property}&order=desc${searchSelection}`;
 
     fetch(Url)
       .then(res => res.json())
@@ -29,7 +30,7 @@ const Home = () => {
       });
 
     window.scrollTo(0, 0);
-  }, [categoryId, sortType]);
+  }, [categoryId, sortType, searchValue]);
 
   return (
     <div className="container">
