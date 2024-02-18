@@ -8,9 +8,20 @@ import Sort from "../components/Sort";
 const Home = () => {
   const [pizzas, setPizzas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [categoryId, setCategoryId] = useState(0);
+  const [sortType, setSortType] = useState({
+    name: 'популярности',
+    property: 'rating',
+  });
 
   useEffect(() => {
-    fetch(process.env.REACT_APP_MOCKAPI_URL)
+    setIsLoading(true);
+
+    const categorySelection = categoryId > 0 ? `category=${categoryId}` : '';
+
+    const Url = `${process.env.REACT_APP_MOCKAPI_URL}/?${categorySelection}&sortBy=${sortType.property}&order=desc`;
+
+    fetch(Url)
       .then(res => res.json())
       .then(data => {
         setPizzas(data)
@@ -18,13 +29,13 @@ const Home = () => {
       });
 
     window.scrollTo(0, 0);
-  }, []);
+  }, [categoryId, sortType]);
 
   return (
     <div className="container">
       <div className="content__top">
-        <Categories />
-        <Sort />
+        <Categories value={categoryId} onChangeCategory={(index) => setCategoryId(index)} />
+        <Sort value={sortType} onChangeSort={(index) => setSortType(index)} />
       </div>
 
       <h2 className="content__title">Все пиццы</h2>
