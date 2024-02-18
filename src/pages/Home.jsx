@@ -4,10 +4,12 @@ import PizzaBlock from "../components/PizzaBlock";
 import PizzaBlockSkeleton from "../components/PizzaBlock/skeleton";
 import Categories from "../components/Categories";
 import Sort from "../components/Sort";
+import Pagination from "../components/Pagination";
 
 const Home = ({ searchValue }) => {
   const [pizzas, setPizzas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
   const [categoryId, setCategoryId] = useState(0);
   const [sortType, setSortType] = useState({
     name: 'популярности',
@@ -20,7 +22,7 @@ const Home = ({ searchValue }) => {
     const categorySelection = categoryId > 0 ? `category=${categoryId}` : '';
     const searchSelection = searchValue ? `&search=${searchValue}` : '';
 
-    const Url = `${process.env.REACT_APP_MOCKAPI_URL}/?${categorySelection}&sortBy=${sortType.property}&order=desc${searchSelection}`;
+    const Url = `${process.env.REACT_APP_MOCKAPI_URL}/?page=${currentPage}&limit=4&${categorySelection}&sortBy=${sortType.property}&order=desc${searchSelection}`;
 
     fetch(Url)
       .then(res => res.json())
@@ -30,7 +32,7 @@ const Home = ({ searchValue }) => {
       });
 
     window.scrollTo(0, 0);
-  }, [categoryId, sortType, searchValue]);
+  }, [categoryId, sortType, searchValue, currentPage]);
 
   return (
     <div className="container">
@@ -48,6 +50,8 @@ const Home = ({ searchValue }) => {
             : pizzas.map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />)
         }
       </div>
+
+      <Pagination onPageChange={(number) => setCurrentPage(number)} />
     </div>
   )
 }
