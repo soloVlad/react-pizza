@@ -11,8 +11,7 @@ import { setCategoryId } from "../redux/slices/filterSlice";
 
 const Home = ({ searchValue }) => {
   const dispatch = useDispatch();
-  const categoryId = useSelector(state => state.filter.categoryId);
-  const sort = useSelector(state => state.filter.sort.property);
+  const { categoryId, sort } = useSelector(state => state.filter);
 
   const [pizzas, setPizzas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -25,10 +24,15 @@ const Home = ({ searchValue }) => {
   useEffect(() => {
     setIsLoading(true);
 
-    const categorySelection = categoryId > 0 ? `category=${categoryId}` : '';
-    const searchSelection = searchValue ? `&search=${searchValue}` : '';
+    const categoryUrl = categoryId > 0 ? `category=${categoryId}` : '';
+    const searchUrl = searchValue ? `&search=${searchValue}` : '';
 
-    const Url = `${process.env.REACT_APP_MOCKAPI_URL}/?page=${currentPage}&limit=4&${categorySelection}&sortBy=${sort}&order=desc${searchSelection}`;
+    const pageUrl = `page=${currentPage}`;
+    const limitUrl = 'limit=4';
+    const sortUrl = `sortBy=${sort.property}`;
+    const orderUrl = 'order=desc';
+
+    const Url = `${process.env.REACT_APP_MOCKAPI_URL}/?${pageUrl}&${limitUrl}&${categoryUrl}&${sortUrl}&${orderUrl}${searchUrl}`;
 
     fetch(Url)
       .then(res => res.json())
@@ -38,7 +42,7 @@ const Home = ({ searchValue }) => {
       });
 
     window.scrollTo(0, 0);
-  }, [categoryId, sort, searchValue, currentPage]);
+  }, [categoryId, sort.property, searchValue, currentPage]);
 
   return (
     <div className="container">
