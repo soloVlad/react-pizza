@@ -8,18 +8,21 @@ import Categories from "../components/Categories";
 import Sort from "../components/Sort";
 import Pagination from "../components/Pagination";
 
-import { setCategoryId } from "../redux/slices/filterSlice";
+import { setCategoryId, setCurrentPage } from "../redux/slices/filterSlice";
 
 const Home = ({ searchValue }) => {
   const dispatch = useDispatch();
-  const { categoryId, sort } = useSelector(state => state.filter);
+  const { categoryId, sort, currentPage } = useSelector(state => state.filter);
 
   const [pizzas, setPizzas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
 
   const onChangeCategory = (index) => {
     dispatch(setCategoryId(index));
+  }
+
+  const onPageChange = (number) => {
+    dispatch(setCurrentPage(number));
   }
 
   useEffect(() => {
@@ -60,7 +63,7 @@ const Home = ({ searchValue }) => {
         }
       </div>
 
-      <Pagination onPageChange={(number) => setCurrentPage(number)} />
+      <Pagination currentPage={currentPage} onPageChange={onPageChange} />
     </div>
   )
 }
