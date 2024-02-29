@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 import PizzaBlock from "../components/PizzaBlock";
 import PizzaBlockSkeleton from "../components/PizzaBlock/skeleton";
@@ -34,12 +35,10 @@ const Home = ({ searchValue }) => {
 
     const Url = `${process.env.REACT_APP_MOCKAPI_URL}/?${pageUrl}&${limitUrl}&${categoryUrl}&${sortUrl}&${orderUrl}${searchUrl}`;
 
-    fetch(Url)
-      .then(res => res.json())
-      .then(data => {
-        setPizzas(data)
-        setIsLoading(false);
-      });
+    axios.get(Url).then(res => {
+      setPizzas(res.data);
+      setIsLoading(false);
+    })
 
     window.scrollTo(0, 0);
   }, [categoryId, sort.property, searchValue, currentPage]);
