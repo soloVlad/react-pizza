@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -15,6 +15,7 @@ import { setCategoryId, setCurrentPage, setFilters } from "../redux/slices/filte
 const Home = ({ searchValue }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isMounted = useRef(false);
   const { categoryId, sort, currentPage } = useSelector(state => state.filter);
 
   const [pizzas, setPizzas] = useState([]);
@@ -59,13 +60,17 @@ const Home = ({ searchValue }) => {
   }, [categoryId, sort.property, searchValue, currentPage]);
 
   useEffect(() => {
-    const params = qs.stringify({
-      categoryId,
-      sortProperty: sort.property,
-      currentPage,
-    });
+    if (isMounted.current) {
+      const params = qs.stringify({
+        categoryId,
+        sortProperty: sort.property,
+        currentPage,
+      });
 
-    navigate(`?${params}`);
+      navigate(`?${params}`);
+    }
+
+    isMounted.current = true;
   }, [categoryId, sort.property, currentPage]);
 
   return (
