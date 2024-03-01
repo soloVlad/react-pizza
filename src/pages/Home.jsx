@@ -16,6 +16,7 @@ const Home = ({ searchValue }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isMounted = useRef(false);
+  const isSearch = useRef(false);
   const { categoryId, sort, currentPage } = useSelector(state => state.filter);
 
   const [pizzas, setPizzas] = useState([]);
@@ -29,16 +30,7 @@ const Home = ({ searchValue }) => {
     dispatch(setCurrentPage(number));
   }
 
-  useEffect(() => {
-    if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
-      console.log(params);
-
-      dispatch(setFilters(params));
-    }
-  }, []);
-
-  useEffect(() => {
+  const fetchPizzas = () => {
     setIsLoading(true);
 
     const categoryUrl = categoryId > 0 ? `category=${categoryId}` : '';
@@ -57,7 +49,7 @@ const Home = ({ searchValue }) => {
     })
 
     window.scrollTo(0, 0);
-  }, [categoryId, sort.property, searchValue, currentPage]);
+  }
 
   useEffect(() => {
     if (isMounted.current) {
@@ -72,6 +64,25 @@ const Home = ({ searchValue }) => {
 
     isMounted.current = true;
   }, [categoryId, sort.property, currentPage]);
+
+
+  useEffect(() => {
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+
+      dispatch(setFilters(params));
+
+      isSearch.current = true;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isSearch.current) {
+      fetchPizzas();
+    }
+
+    isSearch.current = false;
+  }, [categoryId, sort.property, searchValue, currentPage]);
 
   return (
     <div className="container">
