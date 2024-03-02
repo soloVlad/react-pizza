@@ -1,5 +1,5 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Search from './Search';
 
@@ -8,18 +8,20 @@ import { resetFilters } from '../redux/slices/filterSlice';
 import logoSvg from '../assets/img/pizza-logo.svg';
 
 const Header = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { totalPrice, items } = useSelector((state) => state.cart);
+
+  const amountOfItems = items.reduce((amount, item) => amount += item.count, 0);
 
   const handleLogoClick = () => {
     dispatch(resetFilters());
-    navigate('/');
   }
 
   return (
     <div className="header">
       <div className="container">
-        <Link onClick={handleLogoClick}>
+        <Link to="/" onClick={handleLogoClick}>
           <div className="header__logo">
             <img width="38" src={logoSvg} alt="Pizza logo" />
 
@@ -34,7 +36,7 @@ const Header = () => {
 
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">
-            <span>520 ₽</span>
+            <span>{totalPrice} ₽</span>
 
             <div className="button__delimiter"></div>
 
@@ -67,7 +69,7 @@ const Header = () => {
                 strokeLinejoin="round"
               />
             </svg>
-            <span>3</span>
+            <span>{amountOfItems}</span>
           </Link>
         </div>
       </div>
