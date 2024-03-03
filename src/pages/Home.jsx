@@ -30,7 +30,7 @@ const Home = ({ searchValue }) => {
     dispatch(setCurrentPage(number));
   }
 
-  const fetchPizzas = () => {
+  const fetchPizzas = async () => {
     setIsLoading(true);
 
     const categoryUrl = categoryId > 0 ? `category=${categoryId}` : '';
@@ -43,10 +43,14 @@ const Home = ({ searchValue }) => {
 
     const Url = `${process.env.REACT_APP_MOCKAPI_URL}/?${pageUrl}&${limitUrl}&${categoryUrl}&${sortUrl}&${orderUrl}${searchUrl}`;
 
-    axios.get(Url).then(res => {
+    try {
+      const res = await axios.get(Url)
       setPizzas(res.data);
+    } catch (err) {
+      console.log(err);
+    } finally {
       setIsLoading(false);
-    })
+    }
 
     window.scrollTo(0, 0);
   }
