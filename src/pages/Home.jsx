@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import qs from 'qs';
@@ -19,8 +19,6 @@ const Home = ({ searchValue }) => {
   const isSearch = useRef(false);
   const { categoryId, sort, currentPage } = useSelector(state => state.filter);
   const { items: pizzas, status } = useSelector(state => state.pizzas);
-
-  // const [isLoading, setIsLoading] = useState(true);
 
   const onChangeCategory = (index) => {
     dispatch(setCategoryId(index));
