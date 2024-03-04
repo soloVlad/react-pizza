@@ -12,12 +12,12 @@ import Pagination from "../components/Pagination";
 import { setCategoryId, setCurrentPage, setFilters } from "../redux/slices/filterSlice";
 import { fetchPizzas } from "../redux/slices/pizzas.slice";
 
-const Home = ({ searchValue }) => {
+const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isMounted = useRef(false);
   const isSearch = useRef(false);
-  const { categoryId, sort, currentPage } = useSelector(state => state.filter);
+  const { categoryId, searchValue, sort, currentPage } = useSelector(state => state.filter);
   const { items: pizzas, status } = useSelector(state => state.pizzas);
 
   const onChangeCategory = (index) => {
