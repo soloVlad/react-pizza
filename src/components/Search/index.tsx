@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { ChangeEvent, useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 //@ts-ignore-next-line
 import debounce from 'lodash.debounce';
@@ -15,7 +15,7 @@ const Search = () => {
     dispatch(setSearchValue(value));
   }, 300), []);
 
-  const onChangeInput = (event: any) => {
+  const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
     updateSearchValue(event.target.value);
   }

@@ -36,8 +36,8 @@ const Sort = () => {
   }
 
   useEffect(() => {
-    const handleClick = (event: any) => {
-      if (!event.composedPath().includes(sortRef.current)) {
+    const handleClick = (event: MouseEvent) => {
+      if (sortRef.current && !event.composedPath().includes(sortRef.current)) {
         setOpened(false);
       }
     }
