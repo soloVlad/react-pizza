@@ -17,14 +17,17 @@ const Home = () => {
   const navigate = useNavigate();
   const isMounted = useRef(false);
   const isSearch = useRef(false);
+
+  //@ts-ignore-next-line
   const { categoryId, searchValue, sort, currentPage } = useSelector(state => state.filter);
+  //@ts-ignore-next-line
   const { items: pizzas, status } = useSelector(state => state.pizzas);
 
-  const onChangeCategory = (index) => {
+  const onChangeCategory = (index: number) => {
     dispatch(setCategoryId(index));
   }
 
-  const onPageChange = (number) => {
+  const onPageChange = (number: number) => {
     dispatch(setCurrentPage(number));
   }
 
@@ -39,6 +42,7 @@ const Home = () => {
 
     const Url = `${process.env.REACT_APP_MOCKAPI_URL}/?${pageUrl}&${limitUrl}&${categoryUrl}&${sortUrl}&${orderUrl}${searchUrl}`;
 
+    // @ts-ignore-next-line
     dispatch(fetchPizzas(Url));
 
     window.scrollTo(0, 0);
@@ -96,7 +100,7 @@ const Home = () => {
               {
                 status === 'loading'
                   ? [...new Array(6)].map((_, index) => <PizzaBlockSkeleton key={index} />)
-                  : pizzas.map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />)
+                  : pizzas.map((pizza: any) => <PizzaBlock key={pizza.id} {...pizza} />)
               }
             </div>
 

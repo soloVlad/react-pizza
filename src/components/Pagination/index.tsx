@@ -1,8 +1,14 @@
 import ReactPaginate from "react-paginate";
 
 import classes from './index.module.scss';
+import { FC } from "react";
 
-const Pagination = ({ currentPage, onPageChange }) => {
+type PaginationProps = {
+  currentPage: number;
+  onPageChange: any;
+}
+
+const Pagination: FC<PaginationProps> = ({ currentPage, onPageChange }) => {
   return (
     <ReactPaginate
       className={classes.root}

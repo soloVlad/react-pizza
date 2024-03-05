@@ -1,8 +1,19 @@
+import { FC } from "react";
 import { useDispatch } from "react-redux";
 
 import { addItem, minusItem, removeItem } from "../../redux/slices/cart.slice";
 
-const CartItem = ({
+type CartItemProps = {
+  id: string;
+  title: string;
+  type: string;
+  size: number;
+  price: number;
+  count: number;
+  imageUrl: string;
+}
+
+const CartItem: FC<CartItemProps> = ({
   id,
   title,
   type,

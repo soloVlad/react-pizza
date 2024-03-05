@@ -10,9 +10,10 @@ import logoSvg from '../assets/img/pizza-logo.svg';
 const Header = () => {
   const dispatch = useDispatch();
 
+  //@ts-ignore-next-line
   const { totalPrice, items } = useSelector((state) => state.cart);
 
-  const amountOfItems = items.reduce((amount, item) => amount += item.count, 0);
+  const amountOfItems = items.reduce((amount: number, item: any) => amount += item.count, 0);
 
   const handleLogoClick = () => {
     dispatch(resetFilters());
